@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import BUser
 
 
 def ListUsersView(request):
-    return HttpResponse("Hello users")
+    users = BUser.objects.all()
+    return HttpResponse(users)
 
 
 def GetUserView(request, pk=1):
