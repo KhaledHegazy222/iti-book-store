@@ -28,10 +28,12 @@
           <a href="{% url 'book:add' %}">Add Book</a>
         </li>
         <li>
-          <a href="{% url 'user:get_user' user_id %}">Get User</a>
+          <a href="{% url 'user:get_user' %}">Get User</a>
         </li>
         <li>
-          <a href="{% url 'authentication:change_password' %}">Change Password</a>
+          <a href="{% url 'authentication:change_password' %}"
+            >Change Password</a
+          >
         </li>
         {% else %}
         <li>

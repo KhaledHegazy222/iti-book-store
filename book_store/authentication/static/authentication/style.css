@@ -45,3 +45,15 @@
   white-space: nowrap;
   margin: 50px auto;
 }
+
+
+.form-content > p{
+
+  margin: 10px 0;
+
+}
+.form-content > p > span {
+  font-weight: 600;
+  color: #34336b;
+  text-transform: capitalize;
+}

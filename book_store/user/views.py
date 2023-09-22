@@ -19,7 +19,10 @@ def ListUsers(request):
     return render(request, "user/list_users.html", attach_user_context(request, context))
 
 
-def GetUser(request, pk):
+
+
+
+def GetUser(request):
 
     if not is_logged_in(request):
         return redirect("/api/auth/login")
@@ -27,8 +30,12 @@ def GetUser(request, pk):
     if not is_admin(request):
         return redirect("/api/auth/login")
 
-    buser = BUser.objects.get(pk=pk)
-    context = {
-        "buser": buser
-    }
-    return render(request, "user/get_user.html", attach_user_context(request, context))
+    if request.method == "GET":
+        return render(request, "user/get_user.html", attach_user_context(request, {}))
+    else:
+        id = request.POST['id']
+        buser = BUser.objects.get(id = id)
+        context = {
+            "buser": buser
+        }
+        return render(request, "user/get_user.html", attach_user_context(request, context))
