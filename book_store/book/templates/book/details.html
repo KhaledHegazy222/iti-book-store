@@ -1,25 +1,25 @@
-{% extends "book_store/base.html" %}
+{% extends "book_store/base.html" %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'book/details.css' %}" />
 
-{% block content %}
+<div class="book-content">
+  <h2 class="book-title">{{title}}</h2>
+  <p class="book-field"><span>author: </span>{{author}}</p>
+  <p class="book-field"><span>state: </span>{{state}}</p>
+  <p class="book-field"><span>return date: </span>{{return_date}}</p>
+  <p class="book-field"><span>price: </span>{{price}}</p>
+  {% if borrowing_user %}
+  <p class="book-field"><span>Borrowing User: </span>{{borrowing_user}}</p>
+  {% endif %}
 
-<h2>{{title}}</h2>
-<p>{{author}}</p>
-<p>{{state}}</p>
-<p>{{return_date}}</p>
-<p>{{price}}</p>
-<p>{{borrowing_user}}</p>
-
-<form method="get" action="{% url 'book:edit' id %}">
-  <button type="submit">Edit</button>
-</form>
-<form method="post" action="{% url 'book:delete' id %}">
-  {% csrf_token %}
-  <button type="submit">Delete</button>
-</form>
+  <div class="controls">
+    <form method="get" action="{% url 'book:edit' id %}">
+      <button class="edit-btn" type="submit">Edit</button>
+    </form>
+    <form method="post" action="{% url 'book:delete' id %}">
+      {% csrf_token %}
+      <button class="delete-btn" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
 
 {% endblock %}
-
-
-
-
-

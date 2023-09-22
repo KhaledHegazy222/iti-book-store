@@ -31,7 +31,7 @@
           <a href="{% url 'user:get_user' user_id %}">Get User</a>
         </li>
         <li>
-          <a href="#">Change Password</a>
+          <a href="{% url 'authentication:change_password' %}">Change Password</a>
         </li>
         {% else %}
         <li>
@@ -58,8 +58,6 @@
         {% endif %}
       </ul>
     </nav>
-    <main>
-      <div>{% block content %} {% endblock %}</div>
-    </main>
+    <main>{% block content %} {% endblock %}</main>
   </body>
 </html>

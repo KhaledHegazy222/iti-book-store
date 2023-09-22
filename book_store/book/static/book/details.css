@@ -1,0 +1,55 @@
+.book-content {
+  width: fit-content;
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.149);
+  border-radius: 4px;
+}
+.book-content > *{
+  margin: 10px 0;
+}
+.book-content > .book-title {
+  font-size: 2rem;
+  text-align: center;
+  margin: 30px;
+}
+.book-content > p > span {
+  font-weight: 600;
+  color: #34336b;
+  text-transform: capitalize;
+}
+
+.book-content .controls {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.book-content .controls button {
+  padding: 10px;
+  width: 100px;
+  transition: all 300ms;
+}
+.book-content .controls button:hover{
+  transform: scale(1.06);
+  box-shadow: 3px 3px 5px rgb(100, 100, 100);
+}
+.book-content .controls .edit-btn {
+  background-color: #34336b;
+  color: white;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: none;
+  border: none;
+}
+.book-content .controls .delete-btn {
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: none;
+  border: none;
+}

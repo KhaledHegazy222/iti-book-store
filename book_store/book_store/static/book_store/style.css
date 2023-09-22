@@ -5,6 +5,10 @@
   font-family: sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 nav {
   height: 90px;
   padding: 20px;
@@ -46,6 +50,5 @@ nav > ul > li a {
 body main {
   background-image: linear-gradient(180deg, #7371f3 10%, #adabee 90%);
   height: calc(100vh - 90px);
-  display: grid;
-  place-content: center;
+  padding: 20px;
 }

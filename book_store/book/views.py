@@ -12,8 +12,7 @@ from .forms import BookForm
 def ListBooks(request):
 
     if not is_logged_in(request):
-        return HttpResponse(status=401)
-
+        return redirect("/api/auth/login")
     books_set = Book.objects.all()
     context = {
         "books": books_set
@@ -24,10 +23,10 @@ def ListBooks(request):
 def ListBorrowedBooks(request):
 
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     if not is_admin(request):
-        return HttpResponse(status=403)
+        return redirect("/api/auth/login")
 
     books_set = Book.objects.filter(state="Taken")
     context = {
@@ -39,7 +38,7 @@ def ListBorrowedBooks(request):
 def GetBookDetails(request, pk=1):
 
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     book_data = Book.objects.get(pk=pk)
     context = {
@@ -55,63 +54,68 @@ def GetBookDetails(request, pk=1):
 
 
 def GetUserBooks(request):
-
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     if not is_student(request):
-        return HttpResponse(status=403)
+        return redirect("/api/auth/login")
 
     user_id = request.session["id"]
     user = BUser.objects.get(id=user_id)
-    print(user.book_set.all())
-    return HttpResponse("Done")
+    context = {
+        "books": user.book_set.all(),
+        "can_return": True
+    }
+    return render(request, "book/list.html", attach_user_context(request, context))
 
 
 @csrf_exempt
 def BorrowBook(request, pk):
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     if not is_student(request):
-        return HttpResponse(status=403)
+        return redirect("/api/auth/login")
 
     user_id = request.session["id"]
 
     selected_book = Book.objects.get(pk=pk)
+    selected_book.state = "Taken"
+    selected_book.save()
     selected_user = BUser.objects.get(id=user_id)
     selected_user.book_set.add(selected_book)
     selected_user.save()
-    print(selected_user.book_set.all())
-    return HttpResponse("Borrow Book")
+
+    return redirect("/api/book/")
 
 
 @csrf_exempt
 def ReturnBook(request, pk):
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     if not is_student(request):
-        return HttpResponse(status=403)
+        return redirect("/api/auth/login")
 
     user_id = request.session["id"]
     selected_book = Book.objects.get(pk=pk)
+    selected_book.state = "Available"
+    selected_book.save()
     selected_user = BUser.objects.get(id=user_id)
     selected_user.book_set.remove(selected_book)
     selected_user.save()
-    print(selected_user.book_set.all())
     selected_book = Book.objects.get(pk=pk)
 
-    return HttpResponse("Borrow Book")
+    return redirect("/api/book/")
 
 
 def AddBook(request):
 
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     if not is_admin(request):
-        return HttpResponse(status=403)
+        return redirect("/api/auth/login")
 
     if request.method == "GET":
         bookForm = BookForm()
@@ -135,10 +139,10 @@ def AddBook(request):
 
 def EditBook(request, pk):
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     if not is_admin(request):
-        return HttpResponse(status=403)
+        return redirect("/api/auth/login")
 
     book_obj = Book.objects.get(pk=pk)
     if request.method == "GET":
@@ -163,10 +167,10 @@ def EditBook(request, pk):
 
 def DeleteBook(request, pk):
     if not is_logged_in(request):
-        return HttpResponse(status=401)
+        return redirect("/api/auth/login")
 
     if not is_admin(request):
-        return HttpResponse(status=403)
+        return redirect("/api/auth/login")
 
     Book.objects.get(pk=pk).delete()
     return redirect("/api/book")

@@ -5,8 +5,12 @@
   {% for buser in busers %}
 
     <li>
-      <h2>{{ buser.user.username }}</h2>
-      <p>{{ buser.user.email }}</p>
+      <h2> {{ buser.user.username }}</h2>
+      {% if buser.user.email %}
+      <p>Email: ({{ buser.user.email }})</p>
+      {% else%}
+      <p>Email: (None)</p>
+      {% endif %}
     </li>
 
   {% endfor %}

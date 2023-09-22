@@ -1,0 +1,71 @@
+.books-list {
+  list-style-type: none;
+  display: grid;
+  grid-template: 1fr / repeat(auto-fit, minmax(300px, 500px));
+  place-content: center;
+  min-width: 100%;
+  gap: 30px;
+}
+.books-list > li {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.149);
+  border-radius: 4px;
+  transition: all 300ms;
+}
+.books-list > li:hover {
+  transform: scale(1.05);
+}
+
+.books-list > li > a {
+  font-size: 1.4rem;
+  color: white;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.author {
+  margin: 10px 0;
+}
+
+.author > span {
+  font-weight: 600;
+}
+
+.available {
+  background-color: rgb(200, 250, 200);
+  color: darkgreen;
+  width: fit-content;
+  padding: 5px 10px;
+  margin-left: auto;
+  font-weight: 600;
+  border-radius: 5px;
+}
+.taken {
+  background-color: lightcoral;
+  color: darkred;
+  width: fit-content;
+  padding: 5px 10px;
+  margin-left: auto;
+  font-weight: 600;
+  border-radius: 5px;
+}
+.books-list > li button {
+  background-color: #34336b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  display: block;
+  margin: auto;
+  padding: 10px 30px;
+  transition: all 300ms;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.books-list > li button:hover {
+  transform: scale(1.06);
+  box-shadow: 3px 3px 5px rgb(100, 100, 100);
+}
+
+.books-list > li .return-btn {
+  background-color: rgb(170, 29, 29);
+}

@@ -1,14 +1,15 @@
-{% extends "book_store/base.html" %}
+{% extends "book_store/base.html" %} 
 
+{% load static %}
 {% block content %}
-
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">
-    {{ button_text }}
-  </button>
-</form>
-
+<link rel="stylesheet" href="{% static 'book/add.css' %}" />
+<div class="form-content">
+  <h3>{{ button_text }}</h3>
+  <form method="post">
+    {% csrf_token %} 
+    {{ form.as_div }}
+    <button type="submit">{{ button_text }}</button>
+  </form>
+</div>
 
 {% endblock %}

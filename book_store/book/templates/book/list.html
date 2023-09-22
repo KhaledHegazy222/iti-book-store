@@ -1,19 +1,30 @@
-{% extends "book_store/base.html" %}
+{% extends "book_store/base.html" %} {% load static %} {% block content %}
 
-{% block content %}
-
-<ul>
+<link rel="stylesheet" href="{% static 'book/list.css' %}" />
+<ul class="books-list">
   {% for book in books %}
-  
-    <li>
-      <a href="{% url 'book:details' book.id %}">{{book.title}}</a>
-      <p>{{book.author}}</p>
-      <p>{{book.state}}</p>
-    </li>
+
+  <li>
+    <a href="{% url 'book:details' book.id %}">{{book.title}}</a>
+    <p class="author"><span>author:</span> {{book.author}}</p>
+    {%if book.state == "Available" %}
+    <p class="available">{{ book.state}}</p>
+    {% elif not can_return %}
+    <p class="taken">{{ book.state}}</p>
+    {% endif %}
+    {% if not is_admin and book.state != "Taken" %}
+    <form method="post" action="{% url 'book:borrow' book.id %}">
+      <button type="submit">Borrow</button>
+    </form>
+    {% endif %}
+    {% if can_return %}
+    <form method="post" action="{% url 'book:return' book.id %}">
+      <button class="return-btn" type="submit">Return</button>
+    </form>
+    {% endif %}
+  </li>
 
   {% endfor %}
-
-
 </ul>
 
 {% endblock %}

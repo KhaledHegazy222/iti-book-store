@@ -34,7 +34,7 @@ def is_student(request):
 
 
 def attach_user_context(request, context):
-    print(request.session.items())
+    
     if not is_logged_in(request):
         context.update({"logged_in": False})
     elif is_admin(request):
@@ -93,6 +93,6 @@ def Logout(request):
 def ChangePassword(request):
     if request.method == "GET":
         context = {}
-        return render(request, "authentication/forget_password.html", attach_user_context(request, context))
+        return render(request, "authentication/change_password.html", attach_user_context(request, context))
     else:
-        return HttpResponse("Changed")
+        return redirect("/home")
