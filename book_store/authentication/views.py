@@ -34,7 +34,7 @@ def is_student(request):
 
 
 def attach_user_context(request, context):
-    
+
     if not is_logged_in(request):
         context.update({"logged_in": False})
     elif is_admin(request):
@@ -58,7 +58,7 @@ def Login(request):
         password = request.POST["password"]
         user = authenticate(username=username, password=password)
         if user == None:
-            return HttpResponse(status=404)
+            return render(request, "authentication/login.html")
         request.session["id"] = user.buser.id
         return redirect("/home")
 
@@ -91,8 +91,20 @@ def Logout(request):
 
 @csrf_exempt
 def ChangePassword(request):
+    if not is_admin(request):
+        return redirect("/api/auth/login")
     if request.method == "GET":
         context = {}
         return render(request, "authentication/change_password.html", attach_user_context(request, context))
     else:
-        return redirect("/home")
+
+        username = request.POST["username"]
+        old_password = request.POST["old_password"]
+        new_password = request.POST["new_password"]
+        user = authenticate(username=username, password=old_password)
+        if user is not None:
+            user.set_password(new_password)
+            user.save()
+            return redirect("/home")
+        else:
+            return redirect("/api/auth/login")
