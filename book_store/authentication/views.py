@@ -1,3 +1,4 @@
+from django.shortcuts import redirect, render
 from user.models import BUser
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -6,30 +7,92 @@ from django.contrib.auth import authenticate
 import json
 
 
+def is_logged_in(request):
+    return "id" in request.session
+
+
+def is_admin(request):
+    if not is_logged_in(request):
+        return False
+    buser_id = request.session["id"]
+    try:
+        buser_obj = BUser.objects.get(id=buser_id)
+        return buser_obj.role == "admin"
+    except Exception as E:
+        return False
+
+
+def is_student(request):
+    if not is_logged_in(request):
+        return False
+    buser_id = request.session["id"]
+    try:
+        buser_obj = BUser.objects.get(id=buser_id)
+        return buser_obj.role == "student"
+    except Exception as E:
+        return False
+
+
+def attach_user_context(request, context):
+    print(request.session.items())
+    if not is_logged_in(request):
+        context.update({"logged_in": False})
+    elif is_admin(request):
+        context.update({"logged_in": True})
+        context.update({"user_id": request.session['id']})
+        context.update({"is_admin": True})
+    else:
+        context.update({"logged_in": True})
+        context.update({"is_admin": False})
+    return context
+
+
 @csrf_exempt
 def Login(request):
-    request_body = json.loads(request.body)
-    username = request_body["username"]
-    password = request_body["password"]
-    user = authenticate(username=username, password=password)
-    if user == None:
-        return HttpResponse(status=404)
-    return HttpResponse(f"{user.buser} {user.buser.role}")
+    if request.method == "GET":
+        context = {}
+        return render(request, "authentication/login.html", attach_user_context(request, context))
+    else:
+
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(username=username, password=password)
+        if user == None:
+            return HttpResponse(status=404)
+        request.session["id"] = user.buser.id
+        return redirect("/home")
 
 
 @csrf_exempt
 def Signup(request):
+    if request.method == "GET":
+        context = {}
+        return render(request, "authentication/signup.html", attach_user_context(request, context))
+    else:
 
-    request_body = json.loads(request.body)
-    username = request_body["username"]
-    password = request_body["password"]
-    is_admin = request_body["is_admin"]
-    new_user = User.objects.create_user(username=username, password=password)
-    new_buser = BUser.objects.create(
-        user=new_user, role="admin" if is_admin else "student")
-    return HttpResponse(f"{new_buser} {new_buser.role}")
+        username = request.POST["username"]
+        password = request.POST["password"]
+        is_admin = False
+        new_user = User.objects.create_user(
+            username=username, password=password)
+        new_buser = BUser.objects.create(
+            user=new_user, role="admin" if is_admin else "student")
+        request.session["id"] = new_buser.id
+
+        return redirect("/home")
 
 
 @csrf_exempt
 def Logout(request):
-    return HttpResponse("Logout")
+    if "id" in request.session:
+        del request.session["id"]
+    return redirect("/home")
+
+
+@csrf_exempt
+def ChangePassword(request):
+    if request.method == "GET":
+        context = {}
+        return render(request, "authentication/forget_password.html", attach_user_context(request, context))
+    else:
+        return HttpResponse("Changed")

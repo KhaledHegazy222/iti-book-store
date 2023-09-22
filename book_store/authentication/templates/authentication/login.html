@@ -1,0 +1,25 @@
+{% extends "book_store/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'authentication/style.css' %}" />
+
+
+<form method="post">
+  {% csrf_token %}
+  <div>
+    <label for="username_input">Username</label>
+    <input id="username_input" name="username" type="text" />
+  </div>
+  <div>
+    <label for="password_input">Password</label>
+    <input id="password_input" name="password" type="password" />
+  </div>
+
+
+  <button type="submit">login</button>
+</form>
+
+
+{% endblock %}

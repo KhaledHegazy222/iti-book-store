@@ -1,0 +1,16 @@
+{% extends "book_store/base.html" %}
+
+{% block content %}
+  
+  {% for buser in busers %}
+
+    <li>
+      <h2>{{ buser.user.username }}</h2>
+      <p>{{ buser.user.email }}</p>
+    </li>
+
+  {% endfor %}
+
+
+
+{% endblock %}

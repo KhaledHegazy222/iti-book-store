@@ -1,0 +1,25 @@
+{% extends "book_store/base.html" %}
+
+{% block content %}
+
+<h2>{{title}}</h2>
+<p>{{author}}</p>
+<p>{{state}}</p>
+<p>{{return_date}}</p>
+<p>{{price}}</p>
+<p>{{borrowing_user}}</p>
+
+<form method="get" action="{% url 'book:edit' id %}">
+  <button type="submit">Edit</button>
+</form>
+<form method="post" action="{% url 'book:delete' id %}">
+  {% csrf_token %}
+  <button type="submit">Delete</button>
+</form>
+
+{% endblock %}
+
+
+
+
+

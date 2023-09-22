@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import ListUsersView, GetUserView, ListBooksView, ListBorrowedBookView
+from .views import ListUsers, GetUser
+
+app_name = "user"
 
 urlpatterns = [
-    path("users/", ListUsersView),
-    path("users/<int:pk>/", GetUserView),
-    path("books/", ListBooksView),
-    path("books/borrowed/", ListBorrowedBookView),
+    path("", ListUsers, name="list_users"),
+    path("<int:pk>/", GetUser, name="get_user"),
 ]
